@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <h1>Flip Card Carousel</h1>
     <CarouselContainer />
   </div>
 </template>

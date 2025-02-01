@@ -1,13 +1,15 @@
 <template>
   <div class="flip-card" @click="flipCard">
-    <div :class="{ 'flipped': isFlipped }">
+    <div class="card-container" :class="{ 'flipped': isFlipped }">
       <div class="front">
-        <div class="card-header" @click.stop="cardClicked">{{ header }}</div>
-        <img :src="image" :alt="header" class="card-image">
+        <div class="card-header">{{ header }}</div>
+        <img :src="image" :alt="sleeve" class="card-image">
       </div>
       <div class="back">
         <div class="card-header">{{ header }}</div>
-        <p>{{ cardText }}</p>
+        <div class="card-text-scroll">
+          <p>{{ cardText }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -16,37 +18,21 @@
 <script>
 export default {
   props: {
-    header: {
-      type: String,
-      required: true
-    },
-    image: {
-      type: String,
-      required: true
-    },
-    textPath: {
-      type: String,
-      required: true
-    }
+    header: { type: String, required: true },
+    image: { type: String, required: true },
+    textPath: { type: String, required: true },
+    isFlipped: { type: Boolean, default: false }
   },
   data() {
     return {
       isFlipped: false,
-      cardText: ''
+      cardText: this.textPath
     };
-  },
-  created() {
-    this.fetchText();
   },
   methods: {
     flipCard() {
+      this.$emit('flip');
       this.isFlipped = !this.isFlipped;
-    },
-    async fetchText() {
-      this.cardText = this.textPath;
-    },
-    cardClicked() {
-      this.$emit('card-clicked');
     }
   }
 };
@@ -54,69 +40,64 @@ export default {
 
 <style scoped>
 .flip-card {
+  flex: 0 0 calc(33.33% - 20px);
+  max-width: calc(33.33% - 20px);
+  box-sizing: border-box;
   perspective: 1000px;
-  width: 300px;
-  margin: 0 15px;
-  cursor: pointer;
 }
 
-.flip-card>div {
+.card-container {
   width: 100%;
-  height: 400px;
-  text-align: center;
+  height: 100%;
+  aspect-ratio: 1 / 1;
   transition: transform 0.6s;
   transform-style: preserve-3d;
   position: relative;
-  border: 1px solid #ddd;
-  border-radius: 10px;
 }
 
-.flip-card .flipped {
+.card-container.flipped {
   transform: rotateY(180deg);
 }
 
-.flip-card .front,
-.flip-card .back {
+.front,
+.back {
   position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.flip-card .back {
-  transform: rotateY(180deg);
-  background-color: #f4f4f4;
-  padding: 20px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  text-align: left;
-  line-height: 1.6;
-}
-
-.flip-card .card-header {
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-bottom: 10px;
-  padding: 10px;
-}
-
-.flip-card .card-image {
-  max-width: 100%;
-  max-height: 250px;
-  object-fit: cover;
+  border: black 1px solid;
   border-radius: 10px;
 }
 
-.flip-card .back p {
-  max-width: 90%;
-  word-wrap: break-word;
-  hyphens: auto;
+.front {
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+
+.back {
+  z-index: 1;
+  transform: rotateY(180deg);
+  overflow: hidden;
+
+}
+
+.card-header {
+  padding: 10px;
+  text-align: center;
+}
+
+.card-image {
+  width: 100%;
+  height: calc(100% - 40px);
+  object-fit: contain;
+}
+
+.card-text-scroll {
+  padding: 10px;
+  overflow-y: auto;
+  height: calc(100% - 60px);
+  border: red 1px solid;
 }
 </style>
