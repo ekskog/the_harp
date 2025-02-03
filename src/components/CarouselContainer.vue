@@ -120,75 +120,97 @@ export default {
 
 <style scoped>
 .carousel-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     width: 100%;
     max-width: 1200px;
-    /* Increased to accommodate 3 cards comfortably */
     margin: 0 auto;
-    padding: 0 20px;
-    /* Added padding for better spacing */
-    border: black 1px solid;
-
+    padding: 0 15px; /* Reduced padding for mobile */
+    box-sizing: border-box;
 }
 
 .carousel-wrapper {
-    overflow: hidden;
-    width: 100%;
-    padding: 20px 0;
     position: relative;
-    /* Added for absolute positioning of buttons */
+    width: 100%;
     display: flex;
     align-items: center;
     gap: 10px;
+    overflow: hidden;
 }
-
 
 .carousel {
     display: flex;
-    gap: 20px;
+    gap: 15px; /* Reduced gap for smaller screens */
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     -ms-overflow-style: none;
     scroll-behavior: smooth;
+    width: 100%;
+    padding: 10px 0;
 }
 
 .carousel::-webkit-scrollbar {
     display: none;
-    /* Hides scrollbar in Chrome/Safari */
 }
 
 .carousel-control {
-    padding: 20px 15px;
-    background-color: #f4f4f4;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background-color: rgba(244, 244, 244, 0.8);
     border: 1px solid #ddd;
     cursor: pointer;
     font-size: 24px;
-    z-index: 1;
+    padding: 10px 15px;
+    border-radius: 50%;
     transition: background-color 0.3s;
 }
 
-.carousel-control:hover {
-    background-color: #e0e0e0;
+.carousel-control.left {
+    left: 0;
 }
 
-.carousel-control:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+.carousel-control.right {
+    right: 0;
 }
 
-.carousel-control button {
-    margin: 0 10px;
-    padding: 10px;
-    background-color: #f4f4f4;
-    border: 1px solid #ddd;
-    cursor: pointer;
+/* Mobile Specific Styles */
+@media screen and (max-width: 768px) {
+    .carousel-container {
+        padding: 0 10px;
+    }
+
+    .carousel {
+        gap: 10px;
+    }
+
+    .flip-card {
+        flex: 0 0 calc(50% - 10px); /* 2 cards per row on smaller screens */
+        max-width: calc(50% - 10px);
+        min-width: 150px; /* Smaller minimum width */
+    }
+
+    .carousel-control {
+        font-size: 20px;
+        padding: 8px 12px;
+    }
 }
 
-.carousel button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+/* Very Small Screens */
+@media screen and (max-width: 480px) {
+    .flip-card {
+        flex: 0 0 calc(100% - 10px); /* 1 card per row on very small screens */
+        max-width: calc(100% - 10px);
+        min-width: 100px;
+    }
+
+    .carousel {
+        gap: 15px;
+    }
+
+    .carousel-control {
+        font-size: 18px;
+        padding: 6px 10px;
+    }
 }
 </style>
