@@ -2,8 +2,7 @@
   <div class="flip-card" @click="flipCard">
     <div class="card-container" :class="{ 'flipped': isFlipped }">
       <div class="front">
-        <div class="card-header">{{ header }}</div>
-        <img :src="image" :alt="sleeve" class="card-image">
+        <img :src="image" class="card-image">
       </div>
       <div class="back">
         <div class="card-header">{{ header }}</div>
@@ -40,10 +39,10 @@ export default {
 
 <style scoped>
 .flip-card {
-  flex: 0 0 calc(33.33% - 20px);
-  max-width: calc(33.33% - 20px);
-  box-sizing: border-box;
-  perspective: 1000px;
+    flex: 0 0 calc(33.333% - 14px); /* Adjusted to account for gap */
+    max-width: calc(33.333% - 14px);
+    scroll-snap-align: start; /* Added for better scrolling behavior */
+    min-width: 250px; /* Added minimum width */
 }
 
 .card-container {
@@ -62,13 +61,30 @@ export default {
 .front,
 .back {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: calc(100% - 2px); /* Subtract 2px to account for 1px border on each side */
+  height: calc(100% - 2px); /* Subtract 2px to account for 1px border on each side */
   backface-visibility: hidden;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   border: black 1px solid;
   border-radius: 10px;
+}
+
+.card-image {
+  width: 100%;
+  height: calc(100% - 40px);
+  object-fit: contain; /* This preserves aspect ratio */
+  display: block; /* Removes any extra space below image */
+  margin: auto; /* Additional centering */
+}
+
+.card-header {
+  width: 100%; /* Ensure header takes full width */
+  padding: 10px;
+  text-align: center;
+  flex-shrink: 0; /* Prevents header from shrinking */
 }
 
 .front {
