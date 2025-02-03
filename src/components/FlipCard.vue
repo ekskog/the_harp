@@ -24,14 +24,20 @@ export default {
   },
   data() {
     return {
-      isFlipped: false,
       cardText: this.textPath
     };
   },
   methods: {
     flipCard() {
+      console.log('FlipCard: Flip method called');
+      console.log('Current isFlipped state:', this.isFlipped);
+      // Emit the flip event to the parent
       this.$emit('flip');
-      this.isFlipped = !this.isFlipped;
+    }
+  },
+  watch: {
+    isFlipped(newValue) {
+      console.log('FlipCard: isFlipped changed to', newValue);
     }
   }
 };
@@ -39,12 +45,11 @@ export default {
 
 <style scoped>
 .flip-card {
-    flex: 0 0 calc(33.333% - 14px); /* Adjusted to account for gap */
-    max-width: calc(33.333% - 14px);
-    scroll-snap-align: start; /* Added for better scrolling behavior */
-    min-width: 250px; /* Added minimum width */
+  flex: 0 0 calc(33.333% - 14px);
+  max-width: calc(33.333% - 14px);
+  scroll-snap-align: start;
+  min-width: 250px;
 }
-
 .card-container {
   width: 100%;
   height: 100%;
@@ -53,16 +58,14 @@ export default {
   transform-style: preserve-3d;
   position: relative;
 }
-
 .card-container.flipped {
   transform: rotateY(180deg);
 }
-
 .front,
 .back {
   position: absolute;
-  width: calc(100% - 2px); /* Subtract 2px to account for 1px border on each side */
-  height: calc(100% - 2px); /* Subtract 2px to account for 1px border on each side */
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
   backface-visibility: hidden;
   display: flex;
   flex-direction: column;
@@ -71,45 +74,28 @@ export default {
   border: black 1px solid;
   border-radius: 10px;
 }
-
-.card-image {
-  width: 100%;
-  height: calc(100% - 40px);
-  object-fit: contain; /* This preserves aspect ratio */
-  display: block; /* Removes any extra space below image */
-  margin: auto; /* Additional centering */
-}
-
-.card-header {
-  width: 100%; /* Ensure header takes full width */
-  padding: 10px;
-  text-align: center;
-  flex-shrink: 0; /* Prevents header from shrinking */
-}
-
-.front {
-  z-index: 2;
-  transform: rotateY(0deg);
-}
-
-.back {
-  z-index: 1;
-  transform: rotateY(180deg);
-  overflow: hidden;
-
-}
-
-.card-header {
-  padding: 10px;
-  text-align: center;
-}
-
 .card-image {
   width: 100%;
   height: calc(100% - 40px);
   object-fit: contain;
+  display: block;
+  margin: auto;
 }
-
+.card-header {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.front {
+  z-index: 2;
+  transform: rotateY(0deg);
+}
+.back {
+  z-index: 1;
+  transform: rotateY(180deg);
+  overflow: hidden;
+}
 .card-text-scroll {
   padding: 10px;
   overflow-y: auto;
