@@ -14,12 +14,12 @@
 
 <script>
 import FlipCard from './FlipCard.vue';
-import card1Text from '@/assets/texts/card1.txt?raw';
-import card2Text from '@/assets/texts/card2.txt?raw';
-import card3Text from '@/assets/texts/card3.txt?raw';
-import card4Text from '@/assets/texts/card4.txt?raw';
-import card5Text from '@/assets/texts/card5.txt?raw';
-import card6Text from '@/assets/texts/card6.txt?raw';
+import card1Text from '/texts/card1.txt?raw';
+import card2Text from '/texts/card2.txt?raw';
+import card3Text from '/texts/card3.txt?raw';
+import card4Text from '/texts/card4.txt?raw';
+import card5Text from '/texts/card5.txt?raw';
+import card6Text from '/texts/card6.txt?raw';
 
 export default {
     components: { FlipCard },

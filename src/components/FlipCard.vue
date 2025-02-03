@@ -114,6 +114,5 @@ export default {
   padding: 10px;
   overflow-y: auto;
   height: calc(100% - 60px);
-  border: red 1px solid;
 }
 </style>
