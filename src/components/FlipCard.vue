@@ -1,14 +1,22 @@
 <template>
   <div class="flip-card" @click="flipCard">
-    <div class="card-container" :class="{ 'flipped': isFlipped }">
+    <div class="card-container" :class="{ flipped: isFlipped }">
       <div class="front">
-        <img :src="image" class="card-image">
+        <img :src="image" class="card-image" />
       </div>
       <div class="back">
         <div class="card-header">{{ header }}</div>
         <div class="card-text-scroll">
           <p>{{ cardText }}</p>
         </div>
+        <!-- New Lyrics Button -->
+        <button
+          v-if="lyricsAvailable"
+          class="lyrics-button"
+          @click.stop="showLyrics"
+        >
+          View Lyrics
+        </button>
       </div>
     </div>
   </div>
@@ -20,26 +28,34 @@ export default {
     header: { type: String, required: true },
     image: { type: String, required: true },
     textPath: { type: String, required: true },
-    isFlipped: { type: Boolean, default: false }
+    isFlipped: { type: Boolean, default: false },
+    lyricsAvailable: { type: Boolean, default: false },
+    lyricsId: { type: Number, default: null },
   },
   data() {
     return {
-      cardText: this.textPath
+      cardText: this.textPath,
     };
   },
   methods: {
     flipCard() {
-      console.log('FlipCard: Flip method called');
-      console.log('Current isFlipped state:', this.isFlipped);
+      console.log("FlipCard: Flip method called");
+      console.log("Current isFlipped state:", this.isFlipped);
       // Emit the flip event to the parent
-      this.$emit('flip');
-    }
+      this.$emit("flip");
+    },
+    showLyrics() {
+      console.log("FlipCard: Show lyrics button clicked");
+      if (this.lyricsAvailable) {
+        this.$emit("show-lyrics", this.lyricsId);
+      }
+    },
+    watch: {
+      isFlipped(newValue) {
+        console.log("FlipCard: isFlipped changed to", newValue);
+      },
+    },
   },
-  watch: {
-    isFlipped(newValue) {
-      console.log('FlipCard: isFlipped changed to', newValue);
-    }
-  }
 };
 </script>
 
@@ -100,5 +116,23 @@ export default {
   padding: 10px;
   overflow-y: auto;
   height: calc(100% - 60px);
+}
+
+.lyrics-button {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.lyrics-button:hover {
+  background-color: #0056b3;
 }
 </style>
