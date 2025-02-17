@@ -1,0 +1,57 @@
+[
+    {
+      "id": 1,
+      "title": "MaMoM",
+      "songs": [
+        {
+          "title": "Song 1",
+          "image": "/albums/album1/song1/01.png",
+          "audio": "/albums/album1/song1/01.mp3",
+          "lyrics": "Lyrics for Song 1"
+        },
+        {
+          "title": "Song 2",
+          "image": "/albums/album1/song2/02.png",
+          "audio": "/albums/album1/song2/02.mp3",
+          "lyrics": "Lyrics for Song 2"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "V2",
+      "songs": [
+        {
+          "title": "Song 1",
+          "image": "/albums/album2/song1/01.png",
+          "audio": "/albums/album2/song1/01.mp3",
+          "lyrics": "Lyrics for Song 1"
+        },
+        {
+          "title": "Song 2",
+          "image": "/albums/album2/song2/02.png",
+          "audio": "/albums/album2/song2/02.mp3",
+          "lyrics": "Lyrics for Song 2"
+        }
+      ]
+    },
+    {
+        "id": 3,
+        "title": "Dictators Like Us",
+        "songs": [
+          {
+            "title": "the iraqi who laughed",
+            "image": "/albums/album3/song1/01.png",
+            "audio": "/albums/album3/song1/01.mp3",
+            "lyrics": "Lyrics for Song 1"
+          },
+          {
+            "title": "benson 2045 AD",
+            "image": "/albums/album3/song2/02.png",
+            "audio": "/albums/album3/song2/02.mp3",
+            "lyrics": "Lyrics for Song 2"
+          }
+        ]
+      }
+  ]
+  

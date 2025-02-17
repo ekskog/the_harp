@@ -4,27 +4,31 @@
       <button class="carousel-control left" @click="scrollLeft">‹</button>
       <div class="carousel" ref="carousel">
         <FlipCard
-          v-for="card in displayCards"
+          v-for="(card, index) in displayCards"
           :key="card.uniqueId"
           :header="card.header"
           :image="card.image"
           :text-path="card.textPath"
           :is-flipped="card.isFlipped"
-          :lyrics-available="!!card.lyricsId"
-          :lyrics-id="card.lyricsId"
+          :card-number="index + 1"
+          :card-id="card.uniqueId"
+          :accordeon-id="card.id"
           @flip="() => handleCardFlip(card.id)"
-          @show-lyrics="showLyrics"
+          @show-accordeon="displayAccordeon" 
         />
       </div>
       <button class="carousel-control right" @click="scrollRight">›</button>
     </div>
-    <LyricsDisplay ref="lyricsDisplay" :lyrics="lyrics" />
+    <!-- Conditionally display the AlbumAccordeon BELOW the carousel -->
+    <div v-if="selectedAccordeonId" class="Accordeon-wrapper">
+      <AlbumAccordeon :selectedAccordeonId="selectedAccordeonId" />
+    </div>
   </div>
 </template>
 
 <script>
 import FlipCard from "./FlipCard.vue";
-import LyricsDisplay from "./LyricsDisplay.vue";
+import AlbumAccordeon from "./AlbumAccordeon.vue";
 
 import card1Text from "/texts/card1.txt?raw";
 import card2Text from "/texts/card2.txt?raw";
@@ -36,28 +40,12 @@ import card6Text from "/texts/card6.txt?raw";
 export default {
   components: {
     FlipCard,
-    LyricsDisplay,
+    AlbumAccordeon,
   },
   data() {
     return {
+      selectedAccordeonId: null,
       currentIndex: 0,
-      lyrics: [
-        {
-          id: 1,
-          title: "MaMoM Lyrics",
-          lyrics: `First verse of MaMoM
-Second verse of MaMoM
-Third verse of MaMoM`,
-        },
-        {
-          id: 2,
-          title: "V2 Lyrics",
-          lyrics: `First verse of V2
-Second verse of V2
-Third verse of V2`,
-        },
-        // Add more lyrics as needed
-      ],
       cards: [
         {
           id: 1,
@@ -65,7 +53,6 @@ Third verse of V2`,
           image: new URL("/images/card1.jpg", import.meta.url).href,
           textPath: card1Text,
           isFlipped: false,
-          lyricsId: 1,
         },
         {
           id: 2,
@@ -73,7 +60,6 @@ Third verse of V2`,
           image: new URL("/images/card2.jpg", import.meta.url).href,
           textPath: card2Text,
           isFlipped: false,
-          lyricsId: 2,
         },
         {
           id: 3,
@@ -81,7 +67,6 @@ Third verse of V2`,
           image: new URL("/images/card3.jpg", import.meta.url).href,
           textPath: card3Text,
           isFlipped: false,
-          lyricsId: 3,
         },
         {
           id: 4,
@@ -89,7 +74,6 @@ Third verse of V2`,
           image: new URL("/images/card4.jpg", import.meta.url).href,
           textPath: card4Text,
           isFlipped: false,
-          lyricsId: 4,
         },
         {
           id: 5,
@@ -97,7 +81,6 @@ Third verse of V2`,
           image: new URL("/images/card5.jpg", import.meta.url).href,
           textPath: card5Text,
           isFlipped: false,
-          lyricsId: 5,
         },
         {
           id: 6,
@@ -105,7 +88,7 @@ Third verse of V2`,
           image: new URL("/images/card6.jpg", import.meta.url).href,
           textPath: card6Text,
           isFlipped: false,
-          lyricsId: 6,
+          lyrisId: 6,
         },
       ],
     };
@@ -180,9 +163,10 @@ Third verse of V2`,
     handleScroll() {
       // You can add any scroll-related logic here if necessary
     },
-    showLyrics(lyricsId) {
-      // Ensure the lyrics display method is called
-      this.$refs.lyricsDisplay.displayLyrics(lyricsId);
+    displayAccordeon(cardId) {
+      // Update selectedAccordeonId to the cardId, triggering the accordion to be displayed
+      console.log("CarouselContainer: Displaying Accordeon for card ID", cardId);
+      this.selectedAccordeonId = cardId;
     },
   },
 };
@@ -200,7 +184,8 @@ Third verse of V2`,
 .carousel-wrapper {
   display: flex;
   align-items: center;
-  gap: 20px; /* Space for arrows */
+  gap: 20px;
+  /* Space for arrows */
   width: 100%;
 }
 
@@ -212,7 +197,8 @@ Third verse of V2`,
   padding: 10px 15px;
   border-radius: 50%;
   transition: background-color 0.3s, transform 0.2s;
-  flex-shrink: 0; /* Prevent arrows from shrinking */
+  flex-shrink: 0;
+  /* Prevent arrows from shrinking */
 }
 
 .carousel-control:hover {
@@ -221,15 +207,18 @@ Third verse of V2`,
 }
 
 .carousel-control.left {
-  order: -1; /* Place left arrow before carousel */
+  order: -1;
+  /* Place left arrow before carousel */
 }
 
 .carousel-control.right {
-  order: 1; /* Place right arrow after carousel */
+  order: 1;
+  /* Place right arrow after carousel */
 }
 
 .carousel {
-  flex-grow: 1; /* Allow carousel to take remaining space */
+  flex-grow: 1;
+  /* Allow carousel to take remaining space */
   display: flex;
   gap: 15px;
   overflow-x: auto;

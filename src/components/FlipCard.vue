@@ -6,16 +6,13 @@
       </div>
       <div class="back">
         <div class="card-header">{{ header }}</div>
+        <div class="card-id">Card ID: {{ cardNumber }}</div>
         <div class="card-text-scroll">
           <p>{{ cardText }}</p>
         </div>
-        <!-- New Lyrics Button -->
-        <button
-          v-if="lyricsAvailable"
-          class="lyrics-button"
-          @click.stop="showLyrics"
-        >
-          View Lyrics
+        
+        <button class="show-accordeon-button" @click.stop="showAccordeon">
+          Show Album
         </button>
       </div>
     </div>
@@ -23,37 +20,42 @@
 </template>
 
 <script>
+import AlbumAccordeon from "./AlbumAccordeon.vue";
+
 export default {
+  name: "FlipCard",
+  components: {
+    AlbumAccordeon,
+  },
   props: {
     header: { type: String, required: true },
     image: { type: String, required: true },
     textPath: { type: String, required: true },
     isFlipped: { type: Boolean, default: false },
-    lyricsAvailable: { type: Boolean, default: false },
-    lyricsId: { type: Number, default: null },
+    cardNumber: { type: Number, required: true }, // <-- New prop
+    accordeonId: { type: Number, required: true }, // <-- New prop
   },
+
   data() {
     return {
       cardText: this.textPath,
+      AccordeonVisible: false,
     };
   },
   methods: {
     flipCard() {
       console.log("FlipCard: Flip method called");
       console.log("Current isFlipped state:", this.isFlipped);
-      // Emit the flip event to the parent
       this.$emit("flip");
     },
-    showLyrics() {
-      console.log("FlipCard: Show lyrics button clicked");
-      if (this.lyricsAvailable) {
-        this.$emit("show-lyrics", this.lyricsId);
-      }
+    showAccordeon() {
+      console.log("FlipCard: Accordeon button clicked: ", this.accordeonId);
+      this.$emit("showAccordeon", this.accordeonId);
     },
-    watch: {
-      isFlipped(newValue) {
-        console.log("FlipCard: isFlipped changed to", newValue);
-      },
+  },
+  watch: {
+    isFlipped(newValue) {
+      console.log("FlipCard: isFlipped changed to", newValue);
     },
   },
 };
@@ -87,7 +89,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: black 1px solid;
+  border: 1px solid black;
   border-radius: 10px;
 }
 .card-image {
@@ -111,14 +113,14 @@ export default {
   z-index: 1;
   transform: rotateY(180deg);
   overflow: hidden;
+  position: relative;
 }
 .card-text-scroll {
   padding: 10px;
   overflow-y: auto;
   height: calc(100% - 60px);
 }
-
-.lyrics-button {
+.accordeon-button {
   position: absolute;
   bottom: 10px;
   left: 50%;
@@ -131,8 +133,11 @@ export default {
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
-.lyrics-button:hover {
+.accordeon-button:hover {
   background-color: #0056b3;
+}
+.Accordeon-wrapper {
+  margin-top: 10px;
+  width: 100%;
 }
 </style>
